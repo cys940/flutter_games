@@ -49,5 +49,7 @@ app.*.map.json
 
 # Agent related
 .agent/
+.include/
+.omc/
 AGENTS.md
 **/AGENTS.md
