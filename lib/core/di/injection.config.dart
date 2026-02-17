@@ -10,8 +10,15 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:game/core/di/engine_module.dart' as _i378;
-import 'package:game/features/home/data/repositories/mock_home_repository.dart'
-    as _i74;
+import 'package:game/core/di/supabase_module.dart' as _i919;
+import 'package:game/features/auth/data/repositories/supabase_auth_repository.dart'
+    as _i1018;
+import 'package:game/features/auth/domain/repositories/auth_repository.dart'
+    as _i573;
+import 'package:game/features/auth/presentation/viewmodels/login_view_model.dart'
+    as _i79;
+import 'package:game/features/home/data/repositories/supabase_home_repository.dart'
+    as _i682;
 import 'package:game/features/home/domain/repositories/home_repository.dart'
     as _i75;
 import 'package:game/features/home/domain/usecases/get_games_usecase.dart'
@@ -26,6 +33,7 @@ import 'package:game/features/shooter/presentation/viewmodels/shooter_view_model
     as _i707;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
+import 'package:supabase_flutter/supabase_flutter.dart' as _i454;
 
 extension GetItInjectableX on _i174.GetIt {
   // initializes the registration of main-scope dependencies inside of GetIt
@@ -35,14 +43,24 @@ extension GetItInjectableX on _i174.GetIt {
   }) {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
     final engineModule = _$EngineModule();
+    final supabaseModule = _$SupabaseModule();
     gh.factory<_i32.HomeGameEngine>(() => _i32.HomeGameEngine());
     gh.lazySingleton<_i405.ShooterEngine>(() => engineModule.shooterEngine);
-    gh.lazySingleton<_i75.HomeRepository>(() => _i74.MockHomeRepository());
-    gh.factory<_i801.GetGamesUseCase>(
-      () => _i801.GetGamesUseCase(gh<_i75.HomeRepository>()),
+    gh.lazySingleton<_i454.SupabaseClient>(() => supabaseModule.supabaseClient);
+    gh.lazySingleton<_i573.AuthRepository>(
+      () => _i1018.SupabaseAuthRepository(gh<_i454.SupabaseClient>()),
+    );
+    gh.lazySingleton<_i75.HomeRepository>(
+      () => _i682.SupabaseHomeRepository(gh<_i454.SupabaseClient>()),
+    );
+    gh.factory<_i79.LoginViewModel>(
+      () => _i79.LoginViewModel(gh<_i573.AuthRepository>()),
     );
     gh.factory<_i707.ShooterViewModel>(
       () => _i707.ShooterViewModel(gh<_i405.ShooterEngine>()),
+    );
+    gh.factory<_i801.GetGamesUseCase>(
+      () => _i801.GetGamesUseCase(gh<_i75.HomeRepository>()),
     );
     gh.factory<_i553.HomeViewModel>(
       () => _i553.HomeViewModel(
@@ -55,3 +73,5 @@ extension GetItInjectableX on _i174.GetIt {
 }
 
 class _$EngineModule extends _i378.EngineModule {}
+
+class _$SupabaseModule extends _i919.SupabaseModule {}

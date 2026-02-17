@@ -1,9 +1,9 @@
-import 'package:injectable/injectable.dart';
+// import 'package:injectable/injectable.dart';
 import '../../domain/entities/game_entity.dart';
 import '../../domain/repositories/home_repository.dart';
 
 /// 테스트를 위한 HomeRepository 목업 구현체입니다.
-@LazySingleton(as: HomeRepository)
+// @LazySingleton(as: HomeRepository)
 class MockHomeRepository implements HomeRepository {
   @override
   Future<List<GameEntity>> getGames() async {

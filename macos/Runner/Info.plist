@@ -29,8 +29,8 @@
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 	<key>FLTEnableFlutterGPU</key>
-	<true/>
+	<false/>
 	<key>FLTEnableImpeller</key>
-	<true/>
+	<false/>
 </dict>
 </plist>

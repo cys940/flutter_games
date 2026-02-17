@@ -1,5 +1,10 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+
+import '../../features/auth/domain/repositories/auth_repository.dart';
+import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/home/presentation/pages/home_page.dart';
 import '../../features/home/presentation/viewmodels/home_view_model.dart';
 import '../../features/shooter/presentation/pages/shooter_page.dart';
@@ -10,7 +15,27 @@ import '../di/injection.dart';
 class AppRouter {
   static final GoRouter router = GoRouter(
     initialLocation: '/',
+    // 사용자의 인증 상태 변화에 따라 라우터를 새로고침합니다.
+    refreshListenable: _GoRouterRefreshStream(Supabase.instance.client.auth.onAuthStateChange),
+    redirect: (context, state) {
+      final authRepository = getIt<AuthRepository>();
+      final isLoggedIn = authRepository.currentUser != null;
+      final isLoggingIn = state.uri.path == '/login';
+
+      if (!isLoggedIn && !isLoggingIn) {
+        return '/login';
+      }
+      if (isLoggedIn && isLoggingIn) {
+        return '/';
+      }
+      return null;
+    },
     routes: [
+      // 로그인 화면
+      GoRoute(
+        path: '/login',
+        builder: (context, state) => const LoginPage(),
+      ),
       // 홈 화면
       GoRoute(
         path: '/',
@@ -26,11 +51,27 @@ class AppRouter {
         ),
       ),
     ],
-    // 네비게이션 에러 처리 (선택 사항)
+    // 네비게이션 에러 처리
     errorBuilder: (context, state) => Scaffold(
       body: Center(
         child: Text('No route defined for ${state.uri}'),
       ),
     ),
   );
+}
+
+/// Supabase AuthState 변화를 GoRouter에 전달하기 위한 헬퍼 클래스
+class _GoRouterRefreshStream extends ChangeNotifier {
+  _GoRouterRefreshStream(Stream<AuthState> stream) {
+    notifyListeners();
+    _subscription = stream.asBroadcastStream().listen((_) => notifyListeners());
+  }
+
+  late final StreamSubscription<AuthState> _subscription;
+
+  @override
+  void dispose() {
+    _subscription.cancel();
+    super.dispose();
+  }
 }
