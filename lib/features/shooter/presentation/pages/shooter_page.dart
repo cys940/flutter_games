@@ -1,13 +1,12 @@
 import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:signals_flutter/signals_flutter.dart';
 
 import '../../../../core/design_system/styles.dart';
-import '../../../../core/presentation/widgets/game_glass_card.dart';
 import '../../../../core/presentation/widgets/game_gauge.dart';
-import '../../../../core/presentation/widgets/game_score_board.dart';
-import '../../../../core/presentation/widgets/game_status_tag.dart';
+import '../../../../core/presentation/widgets/glass_panel.dart';
 import '../game/shooter_game_widget.dart';
 import '../viewmodels/shooter_view_model.dart';
 
@@ -52,9 +51,42 @@ class ShooterPage extends StatelessWidget {
                     (context) => Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const GameStatusTag(label: 'MISSION STATUS: ACTIVE'),
+                        // Mission Status Tag (Simplified replacement for GameStatusTag)
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 4,
+                          ),
+                          decoration: BoxDecoration(
+                            color: AppColors.accent.withValues(alpha: 0.2),
+                            border: Border.all(
+                              color: AppColors.accent,
+                              width: 1,
+                            ),
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                          child: Text(
+                            'MISSION STATUS: ACTIVE',
+                            style: AppTypography.caption.copyWith(
+                              color: AppColors.accent,
+                            ),
+                          ),
+                        ),
                         const SizedBox(height: 10),
-                        GameScoreBoard(score: viewModel.score.value),
+                        // Score Display (Replacement for GameScoreBoard)
+                        Text(
+                          viewModel.score.value.toString().padLeft(6, '0'),
+                          style: AppTypography.numeric.copyWith(
+                            fontSize: 32,
+                            fontWeight: FontWeight.bold,
+                            shadows: [
+                              Shadow(
+                                color: AppColors.primary.withValues(alpha: 0.5),
+                                blurRadius: 15,
+                              ),
+                            ],
+                          ),
+                        ),
                         const SizedBox(height: 15),
                         // Health Bar (Dynamic)
                         GameGauge(
@@ -69,17 +101,20 @@ class ShooterPage extends StatelessWidget {
                   // Right: Controls / Back
                   Column(
                     children: [
-                      GameGlassCard(
+                      GlassPanel(
                         borderRadius: 12,
                         padding: EdgeInsets.zero,
-                        onTap: () => context.pop(),
-                        child: const SizedBox(
-                          width: 44,
-                          height: 44,
-                          child: Icon(
-                            Icons.close,
-                            color: Colors.white,
-                            size: 24,
+                        child: InkWell(
+                          onTap: () => context.pop(),
+                          borderRadius: BorderRadius.circular(12),
+                          child: const SizedBox(
+                            width: 44,
+                            height: 44,
+                            child: Icon(
+                              Icons.close,
+                              color: Colors.white,
+                              size: 24,
+                            ),
                           ),
                         ),
                       ),
