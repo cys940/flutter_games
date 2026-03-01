@@ -1,9 +1,14 @@
+import 'dart:async';
 import 'dart:ui';
+
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:signals_flutter/signals_flutter.dart';
+
 import '../../../../core/design_system/styles.dart';
 import '../../../../core/di/injection.dart';
+import '../../../../core/layouts/responsive_layout.dart';
 import '../viewmodels/login_view_model.dart';
 
 class LoginPage extends StatefulWidget {
@@ -27,29 +32,47 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    return ResponsiveLayout(
+      mobile: _buildMobileLayout(context),
+      tablet: _buildTabletLayout(context),
+      desktop: _buildDesktopLayout(context),
+    );
+  }
+
+  Widget _buildBaseLayout({
+    required BuildContext context,
+    required double horizontalPadding,
+    required double maxWidth,
+    required double glowSize1,
+    required double glowTop1,
+    required double glowRight1,
+    required double glowSize2,
+    required double glowBottom2,
+    required double glowLeft2,
+  }) {
     return Scaffold(
       backgroundColor: AppColors.background,
       body: Stack(
         children: [
           // Ambient Glow Effects
           Positioned(
-            top: -100,
-            right: -100,
-            child: _buildAmbientGlow(AppColors.primary.withValues(alpha: 0.1), 300),
+            top: glowTop1,
+            right: glowRight1,
+            child: _buildAmbientGlow(AppColors.primary.withValues(alpha: 0.1), glowSize1),
           ),
           Positioned(
-            bottom: -80,
-            left: -80,
-            child: _buildAmbientGlow(AppColors.primary.withValues(alpha: 0.05), 250),
+            bottom: glowBottom2,
+            left: glowLeft2,
+            child: _buildAmbientGlow(AppColors.primary.withValues(alpha: 0.05), glowSize2),
           ),
 
           // Main Content
           SafeArea(
             child: Center(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
+                padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
                 child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 400),
+                  constraints: BoxConstraints(maxWidth: maxWidth),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -57,7 +80,30 @@ class _LoginPageState extends State<LoginPage> {
                       _buildHeader(),
                       const SizedBox(height: 40),
                       _buildInputSection(),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: 8),
+                      // 에러 메시지 표시
+                      Watch((context) {
+                        final error = _viewModel.errorMessage.value;
+                        if (error == null) return const SizedBox.shrink();
+                        return Container(
+                          width: double.infinity,
+                          margin: const EdgeInsets.only(bottom: 8),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 14, vertical: 10),
+                          decoration: BoxDecoration(
+                            color: Colors.red.withValues(alpha: 0.1),
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(
+                                color: Colors.red.withValues(alpha: 0.3)),
+                          ),
+                          child: Text(
+                            error,
+                            style: const TextStyle(
+                                color: Colors.redAccent, fontSize: 12),
+                          ),
+                        );
+                      }),
+                      const SizedBox(height: 16),
                       _buildLoginButton(),
                       const SizedBox(height: 16),
                       _buildHelperLinks(),
@@ -73,6 +119,48 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildMobileLayout(BuildContext context) {
+    return _buildBaseLayout(
+      context: context,
+      horizontalPadding: 24,
+      maxWidth: 400,
+      glowSize1: 200,
+      glowTop1: -50,
+      glowRight1: -50,
+      glowSize2: 150,
+      glowBottom2: -40,
+      glowLeft2: -40,
+    );
+  }
+
+  Widget _buildTabletLayout(BuildContext context) {
+    return _buildBaseLayout(
+      context: context,
+      horizontalPadding: 48,
+      maxWidth: 600,
+      glowSize1: 250,
+      glowTop1: -75,
+      glowRight1: -75,
+      glowSize2: 200,
+      glowBottom2: -60,
+      glowLeft2: -60,
+    );
+  }
+
+  Widget _buildDesktopLayout(BuildContext context) {
+    return _buildBaseLayout(
+      context: context,
+      horizontalPadding: 96,
+      maxWidth: 800,
+      glowSize1: 300,
+      glowTop1: -100,
+      glowRight1: -100,
+      glowSize2: 250,
+      glowBottom2: -80,
+      glowLeft2: -80,
     );
   }
 
@@ -139,8 +227,8 @@ class _LoginPageState extends State<LoginPage> {
         ),
         const SizedBox(height: 4),
         Text(
-          'SYSTEM ACCESS',
-          style: AppTypography.caption.copyWith(
+          '로그인',
+          style: AppTypography.headline1.copyWith(
             color: AppColors.textDim,
             letterSpacing: 2,
           ),
@@ -153,20 +241,20 @@ class _LoginPageState extends State<LoginPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildLabel('ID / USERNAME'),
+        _buildLabel('아이디 / 이메일'),
         const SizedBox(height: 8),
         _buildTextField(
           controller: _emailController,
-          hintText: 'Enter your ID',
+          hintText: '아이디를 입력하세요',
           icon: Icons.person_outline,
           onChanged: (value) => _viewModel.email.value = value,
         ),
         const SizedBox(height: 20),
-        _buildLabel('PASSWORD'),
+        _buildLabel('비밀번호'),
         const SizedBox(height: 8),
         Watch((context) => _buildTextField(
           controller: _passwordController,
-          hintText: 'Enter your password',
+          hintText: '비밀번호를 입력하세요',
           icon: Icons.lock_outline,
           obscureText: !_viewModel.isPasswordVisible.value,
           suffixIcon: IconButton(
@@ -232,7 +320,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
           ),
-          if (suffixIcon != null) suffixIcon,
+          suffixIcon ?? const SizedBox.shrink(),
         ],
       ),
     );
@@ -241,45 +329,60 @@ class _LoginPageState extends State<LoginPage> {
   Widget _buildLoginButton() {
     return Watch((context) {
       final isLoading = _viewModel.isLoading.value;
-      return Container(
-        width: double.infinity,
-        height: 56,
-        decoration: BoxDecoration(
-          boxShadow: AppColors.neonGlow(AppColors.primary),
-        ),
-        child: ElevatedButton(
-          onPressed: isLoading ? null : _viewModel.login,
-          style: ElevatedButton.styleFrom(
-            backgroundColor: AppColors.primary,
-            foregroundColor: AppColors.background,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-            elevation: 0,
-          ),
-          child: isLoading
-              ? const SizedBox(
-                  width: 24,
-                  height: 24,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2,
-                    valueColor: AlwaysStoppedAnimation(AppColors.background),
-                  ),
-                )
-              : Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'LOGIN',
-                      style: AppTypography.headline2.copyWith(
-                        color: AppColors.background,
-                        fontSize: 18,
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    const Icon(Icons.arrow_forward),
-                  ],
+      return GestureDetector(
+        onTap: isLoading ? null : _viewModel.login,
+        child: MouseRegion(
+          cursor: isLoading ? SystemMouseCursors.basic : SystemMouseCursors.click,
+          onEnter: (_) => _viewModel.isHoveringLogin.value = true,
+          onExit: (_) => _viewModel.isHoveringLogin.value = false,
+          child: AnimatedScale(
+            scale: isLoading ? 1.0 : (_viewModel.isHoveringLogin.value ? 1.03 : 1.0),
+            duration: const Duration(milliseconds: 150),
+            child: Container(
+              width: double.infinity,
+              height: 56,
+              decoration: BoxDecoration(
+                boxShadow: AppColors.neonGlow(AppColors.primary),
+                borderRadius: BorderRadius.circular(12),
+                gradient: LinearGradient(
+                  colors: isLoading
+                      ? [
+                          AppColors.primary.withValues(alpha: 0.5),
+                          AppColors.primary.withValues(alpha: 0.5)
+                        ]
+                      : [AppColors.primary, AppColors.primaryLight],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
                 ),
+              ),
+              child: Center(
+                child: isLoading
+                    ? const SizedBox(
+                        width: 24,
+                        height: 24,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          valueColor: AlwaysStoppedAnimation(AppColors.background),
+                        ),
+                      )
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            '로그인',
+                            style: AppTypography.headline2.copyWith(
+                              color: AppColors.background,
+                              fontSize: 18,
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          const Icon(Icons.arrow_forward,
+                              color: AppColors.background),
+                        ],
+                      ),
+              ),
+            ),
+          ),
         ),
       );
     });
@@ -289,16 +392,22 @@ class _LoginPageState extends State<LoginPage> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        _buildTextButton('Find Account'),
+        _buildTextButton(
+          text: '계정 찾기',
+          onPressed: () => context.push('/find-account'),
+        ),
         Text('|', style: TextStyle(color: Colors.white.withValues(alpha: 0.1))),
-        _buildTextButton('Sign Up'),
+        _buildTextButton(
+          text: '회원가입',
+          onPressed: () => context.push('/signup'),
+        ),
       ],
     );
   }
 
-  Widget _buildTextButton(String text) {
+  Widget _buildTextButton({required String text, required VoidCallback onPressed}) {
     return TextButton(
-      onPressed: () {},
+      onPressed: onPressed,
       child: Text(
         text,
         style: AppTypography.body2.copyWith(
@@ -318,7 +427,7 @@ class _LoginPageState extends State<LoginPage> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Text(
-                'OR CONTINUE WITH',
+                '소셜 계정으로 계속하기',
                 style: AppTypography.caption.copyWith(
                   color: AppColors.textDim,
                   fontSize: 8,
@@ -344,24 +453,59 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _buildSocialButton(String type) {
-    return Container(
-      width: 56,
-      height: 56,
-      decoration: BoxDecoration(
-        color: AppColors.surface.withValues(alpha: 0.6),
-        shape: BoxShape.circle,
-        border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
-      ),
-      child: IconButton(
-        onPressed: () {},
-        icon: Icon(
-          type == 'google' ? Icons.g_mobiledata : 
-          type == 'discord' ? Icons.discord : Icons.apple,
-          color: Colors.white70,
-          size: 28,
+    // Determine the signal based on the button type
+    late final Signal<bool> isHovering;
+    if (type == 'google') {
+      isHovering = _viewModel.isHoveringGoogle;
+    } else if (type == 'discord') {
+      isHovering = _viewModel.isHoveringDiscord;
+    } else {
+      isHovering = _viewModel.isHoveringApple;
+    }
+
+    return Watch((context) {
+      return MouseRegion(
+        cursor: SystemMouseCursors.click,
+        onEnter: (_) => isHovering.value = true,
+        onExit: (_) => isHovering.value = false,
+        child: AnimatedScale(
+          scale: isHovering.value ? 1.1 : 1.0,
+          duration: const Duration(milliseconds: 150),
+          child: Container(
+            width: 56,
+            height: 56,
+            decoration: BoxDecoration(
+              color: AppColors.surface.withValues(alpha: 0.6),
+              shape: BoxShape.circle,
+              border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+              boxShadow: isHovering.value
+                  ? AppColors.neonGlow(AppColors.primary)
+                  : null,
+            ),
+            child: IconButton(
+              onPressed: () {
+                if (type == 'google') {
+                  _viewModel.signInWithGoogle();
+                } else if (type == 'discord') {
+                  _viewModel.signInWithDiscord();
+                } else {
+                  _viewModel.signInWithApple();
+                }
+              },
+              icon: Icon(
+                type == 'google'
+                    ? Icons.g_mobiledata
+                    : type == 'discord'
+                        ? Icons.discord
+                        : Icons.apple,
+                color: Colors.white70,
+                size: 28,
+              ),
+            ),
+          ),
         ),
-      ),
-    );
+      );
+    });
   }
 
   Widget _buildFooter() {

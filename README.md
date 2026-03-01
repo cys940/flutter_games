@@ -22,6 +22,47 @@
 
 ---
 
+## 🔐 로그인 / 인증 프로세스 (Auth Flow)
+
+```mermaid
+flowchart TD
+    A([앱 시작]) --> B{세션 존재?}
+    B -- 예 --> C([홈 대시보드])
+    B -- 아니오 --> D([로그인 페이지])
+
+    D --> E{로그인 방식}
+
+    E -- 이메일/비밀번호 --> F[LoginViewModel.login]
+    F --> G{Supabase 인증}
+    G -- 성공 --> C
+    G -- 실패 --> H[에러 메시지 표시]
+    H --> D
+
+    E -- 소셜 로그인\nGoogle / Discord --> I[OAuth 브라우저 열기]
+    I --> J{인증 완료?}
+    J -- 성공 --> C
+    J -- 취소/실패 --> D
+
+    D --> K[회원가입 페이지]
+    K --> L[입력값 유효성 검사]
+    L -- 실패 --> M[에러 표시]
+    M --> K
+    L -- 통과 --> N[Supabase signUp\n+ 메타데이터 전달]
+    N --> O[이메일 인증 메일 발송\ngameapp://callback]
+    O --> P[사용자 이메일 클릭]
+    P --> Q[앱 딥링크로 복귀]
+    Q --> R{세션 수립}
+    R -- 성공 --> C
+    R -- 실패 --> D
+
+    D --> S[계정 찾기 페이지]
+    S --> T[이메일 입력]
+    T --> U[resetPasswordForEmail\ngameapp://callback]
+    U --> V[재설정 메일 발송]
+    V --> D
+```
+
+
 ## 🛠 기술 스택 (Tech Stack)
 
 | 구분 | 기술 / 라이브러리 | 비고 |

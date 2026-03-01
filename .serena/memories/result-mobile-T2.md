@@ -1,3 +1,24 @@
+# Task T2: Refactor GameEntity metadata - Result
+
+**Goal**: Add metadata fields to `GameEntity` to support a richer dashboard.
+
+**Outcome**:
+The `GameEntity` in `lib/features/home/domain/entities/game_entity.dart` has been successfully refactored.
+
+**Changes Details**:
+- A `GameType` enum was introduced to categorize games.
+- The `GameEntity` class now includes the following new fields:
+    - `thumbnailPath` (String)
+    - `gameType` (GameType)
+    - `playCount` (int)
+    - `lastPlayed` (DateTime?, nullable)
+- The constructor was updated to include these new fields.
+- A `copyWith` method was implemented for convenient object manipulation while maintaining immutability.
+- The `operator ==` and `hashCode` methods were manually overridden to ensure proper object comparison and hashing, adhering to the "pure Dart class" requirement.
+
+**Code Snippet (`lib/features/home/domain/entities/game_entity.dart`)**:
+
+```dart
 /// 도메인 레이어의 핵심 게임 엔티티입니다.
 ///
 /// 외부 라이브러리(built_value 등)에 의존하지 않는 순수 Dart 클래스로 작성합니다.
@@ -90,3 +111,4 @@ class GameEntity {
         lastPlayed.hashCode;
   }
 }
+```

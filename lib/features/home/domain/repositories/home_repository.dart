@@ -4,4 +4,6 @@ import '../entities/game_entity.dart';
 abstract class HomeRepository {
   Future<List<GameEntity>> getGames();
   Future<GameEntity> getGameById(String id);
+  Future<void> saveScore({required String gameId, required int score});
+  Future<List<Map<String, dynamic>>> fetchHighScores({required String gameId});
 }

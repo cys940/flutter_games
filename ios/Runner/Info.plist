@@ -49,5 +49,21 @@
 	<true/>
 	<key>FLTEnableImpeller</key>
 	<true/>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>gameapp</string>
+				<!-- TODO: Replace with your actual REVERSED_CLIENT_ID -->
+				<string>com.googleusercontent.apps.YOUR_CLIENT_ID</string>
+			</array>
+		</dict>
+	</array>
+	<key>GIDClientID</key>
+	<!-- TODO: Replace with your actual CLIENT_ID -->
+	<string>YOUR_CLIENT_ID.apps.googleusercontent.com</string>
 </dict>
 </plist>

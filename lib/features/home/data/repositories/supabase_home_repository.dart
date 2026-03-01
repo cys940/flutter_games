@@ -36,7 +36,47 @@ class SupabaseHomeRepository implements HomeRepository {
       id: json['id'] as String,
       title: json['title'] as String,
       description: json['description'] as String? ?? '',
-      score: 0, // 점수 기능 구현 시 별도 조인 또는 쿼리 필요
+      score: json['score'] as int? ?? 0,
+      thumbnailPath: json['thumbnail_path'] as String? ?? '',
+      gameType: _parseGameType(json['game_type'] as String?),
+      playCount: json['play_count'] as int? ?? 0,
+      lastPlayed: json['last_played'] != null
+          ? DateTime.tryParse(json['last_played'] as String)
+          : null,
     );
+  }
+
+  GameType _parseGameType(String? type) {
+    if (type == null) return GameType.other;
+    return GameType.values.firstWhere(
+      (e) => e.name == type.toLowerCase(),
+      orElse: () => GameType.other,
+    );
+  }
+
+  @override
+  Future<void> saveScore({required String gameId, required int score}) async {
+    final userId = _client.auth.currentUser?.id;
+    if (userId == null) {
+      throw Exception('User not authenticated.');
+    }
+
+    await _client.from('scores').insert({
+      'user_id': userId,
+      'game_id': gameId,
+      'score': score,
+    });
+  }
+
+  @override
+  Future<List<Map<String, dynamic>>> fetchHighScores({required String gameId}) async {
+    final response = await _client
+        .from('scores')
+        .select('score, user_id') // Selecting score and user_id for now
+        .eq('game_id', gameId)
+        .order('score', ascending: false)
+        .limit(10); // Top 10 high scores
+
+    return (response as List).map((json) => json as Map<String, dynamic>).toList();
   }
 }
