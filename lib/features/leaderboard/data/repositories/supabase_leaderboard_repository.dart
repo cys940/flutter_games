@@ -10,17 +10,19 @@ class SupabaseLeaderboardRepository implements LeaderboardRepository {
 
   @override
   Future<List<ScoreEntity>> getTopScores({String? gameId, int limit = 50}) async {
-    var query = _supabase
+    // eq() must come before order() and limit() in postgrest
+    dynamic query = _supabase
         .from('scores')
-        .select('*, profiles(username, avatar_url)')
+        .select('*, profiles(username, avatar_url)');
+
+    if (gameId != null && gameId.isNotEmpty) {
+      query = (query as dynamic).eq('game_id', gameId);
+    }
+
+    final data = await (query as dynamic)
         .order('score', ascending: false)
         .limit(limit);
 
-    if (gameId != null && gameId.isNotEmpty) {
-      query = query.eq('game_id', gameId);
-    }
-
-    final data = await query;
     return (data as List).map((row) {
       final profile = row['profiles'] as Map<String, dynamic>? ?? {};
       return ScoreEntity(
