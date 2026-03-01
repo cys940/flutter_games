@@ -104,4 +104,8 @@ class LoginViewModel {
       isLoading.value = false;
     }
   }
+
+  Future<void> signOut() => _authRepository.signOut();
+
+  User? get currentUser => _authRepository.currentUser;
 }

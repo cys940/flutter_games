@@ -12,7 +12,9 @@ import '../../features/home/presentation/pages/game_detail_page.dart';
 import '../../features/home/presentation/viewmodels/home_view_model.dart';
 import '../../features/shooter/presentation/pages/shooter_page.dart';
 import '../../features/shooter/presentation/viewmodels/shooter_view_model.dart';
-import '../../features/games/puzzle/presentation/screens/puzzle_game_screen.dart'; // Add this line
+import '../../features/games/puzzle/presentation/screens/puzzle_game_screen.dart';
+import '../../features/profile/presentation/pages/profile_page.dart';
+import '../../features/leaderboard/presentation/pages/leaderboard_page.dart';
 import '../di/injection.dart';
 
 /// 앱 전체의 라우팅 설정을 관리하는 클래스입니다.
@@ -75,6 +77,16 @@ class AppRouter {
         builder: (context, state) => GameDetailPage(
           gameId: state.pathParameters['id']!,
         ),
+      ),
+      // 프로필 화면
+      GoRoute(
+        path: '/profile',
+        builder: (context, state) => const ProfilePage(),
+      ),
+      // 리더보드 화면
+      GoRoute(
+        path: '/leaderboard',
+        builder: (context, state) => const LeaderboardPage(),
       ),
     ],
     // 네비게이션 에러 처리
