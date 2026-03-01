@@ -36,7 +36,6 @@ linter:
     close_sinks: true
     directives_ordering: true
     lines_longer_than_80_chars: false # 자동 포맷터에 맡김
-    package_api_docs: false
     
     # 가독성 및 유지보수성
     parameter_assignments: true

@@ -9,7 +9,12 @@ abstract class AuthRepository {
   Future<void> signUp({
     required String email,
     required String password,
+    Map<String, dynamic>? data,
   });
+
+  Future<void> resetPassword(String email);
+
+  Future<void> signInWithOAuth(OAuthProvider provider);
 
   Future<void> signOut();
 

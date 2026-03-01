@@ -10,6 +10,7 @@ class AppColors {
 
   // Cyber Core Colors
   static const Color primary = Color(0xFF00F0FF); // Electric Blue
+  static const Color primaryLight = Color(0xFF90F9FF); // Lighter Electric Blue
   static const Color secondary = Color(0xFFBC00FF); // Vivid Purple
   static const Color accent = Color(0xFFFF4444); // Neon Rose/Red
 
