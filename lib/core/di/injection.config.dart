@@ -27,6 +27,18 @@ import 'package:game/features/home/presentation/game/home_game_engine.dart'
     as _i32;
 import 'package:game/features/home/presentation/viewmodels/home_view_model.dart'
     as _i553;
+import 'package:game/features/leaderboard/data/repositories/supabase_leaderboard_repository.dart'
+    as _i826;
+import 'package:game/features/leaderboard/domain/repositories/leaderboard_repository.dart'
+    as _i964;
+import 'package:game/features/leaderboard/presentation/viewmodels/leaderboard_view_model.dart'
+    as _i213;
+import 'package:game/features/profile/data/repositories/supabase_profile_repository.dart'
+    as _i284;
+import 'package:game/features/profile/domain/repositories/profile_repository.dart'
+    as _i644;
+import 'package:game/features/profile/presentation/viewmodels/profile_view_model.dart'
+    as _i373;
 import 'package:game/features/shooter/domain/engine/shooter_engine.dart'
     as _i405;
 import 'package:game/features/shooter/presentation/viewmodels/shooter_view_model.dart'
@@ -47,14 +59,26 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i32.HomeGameEngine>(() => _i32.HomeGameEngine());
     gh.lazySingleton<_i405.ShooterEngine>(() => engineModule.shooterEngine);
     gh.lazySingleton<_i454.SupabaseClient>(() => supabaseModule.supabaseClient);
+    gh.lazySingleton<_i644.ProfileRepository>(
+      () => _i284.SupabaseProfileRepository(gh<_i454.SupabaseClient>()),
+    );
     gh.lazySingleton<_i573.AuthRepository>(
       () => _i1018.SupabaseAuthRepository(gh<_i454.SupabaseClient>()),
+    );
+    gh.lazySingleton<_i964.LeaderboardRepository>(
+      () => _i826.SupabaseLeaderboardRepository(gh<_i454.SupabaseClient>()),
     );
     gh.lazySingleton<_i75.HomeRepository>(
       () => _i682.SupabaseHomeRepository(gh<_i454.SupabaseClient>()),
     );
     gh.factory<_i79.LoginViewModel>(
       () => _i79.LoginViewModel(gh<_i573.AuthRepository>()),
+    );
+    gh.factory<_i373.ProfileViewModel>(
+      () => _i373.ProfileViewModel(gh<_i644.ProfileRepository>()),
+    );
+    gh.factory<_i213.LeaderboardViewModel>(
+      () => _i213.LeaderboardViewModel(gh<_i964.LeaderboardRepository>()),
     );
     gh.factory<_i707.ShooterViewModel>(
       () => _i707.ShooterViewModel(gh<_i405.ShooterEngine>()),
