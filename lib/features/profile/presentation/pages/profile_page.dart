@@ -8,6 +8,7 @@ import '../../../../core/design_system/styles.dart';
 import '../../../../core/di/injection.dart';
 import '../../../../core/layouts/responsive_layout.dart';
 import '../../../auth/presentation/viewmodels/login_view_model.dart';
+import '../../domain/entities/profile_entity.dart';
 import '../viewmodels/profile_view_model.dart';
 
 class ProfilePage extends StatefulWidget {
