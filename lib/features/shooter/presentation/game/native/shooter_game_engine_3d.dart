@@ -29,7 +29,9 @@ class ShooterEngineNative extends BaseGameEngine3D implements ShooterEngine {
 
     // 조명 추가 (World3D에 추가해야 함)
     world.add(LightComponent.ambient(intensity: 0.3));
-    world.add(LightComponent.point(intensity: 1.0, position: v_math.Vector3(5, 10, 5)));
+    world.add(
+      LightComponent.point(intensity: 1.0, position: v_math.Vector3(5, 10, 5)),
+    );
 
     // 초기 웨이브 시작
     _startNextWave();
@@ -57,7 +59,9 @@ class ShooterEngineNative extends BaseGameEngine3D implements ShooterEngine {
       }
     } else {
       // 모든 적이 생성되었고, 필드에 적이 없으면 웨이브 종료
-      final activeEnemies = world.children.whereType<Enemy3D>().where((e) => !e.isDead);
+      final activeEnemies = world.children.whereType<Enemy3D>().where(
+        (e) => !e.isDead,
+      );
       if (activeEnemies.isEmpty) {
         _endWave();
       }

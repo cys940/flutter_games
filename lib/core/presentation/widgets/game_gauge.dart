@@ -27,7 +27,9 @@ class GameGauge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final normalizedValue = (value / maxValue).clamp(0.0, 1.0);
-    final color = activeColor ?? (normalizedValue > 0.3 ? AppColors.secondary : AppColors.accent);
+    final color =
+        activeColor ??
+        (normalizedValue > 0.3 ? AppColors.secondary : AppColors.accent);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -69,7 +71,10 @@ class GameGauge extends StatelessWidget {
                   ),
                   borderRadius: BorderRadius.circular(height / 2),
                   boxShadow: [
-                    BoxShadow(color: color.withValues(alpha: 0.5), blurRadius: 4),
+                    BoxShadow(
+                      color: color.withValues(alpha: 0.5),
+                      blurRadius: 4,
+                    ),
                   ],
                 ),
               ),

@@ -7,7 +7,6 @@ import 'web/shooter_widget_web.dart'
 
 /// 플랫폼에 따라 GameWidget3D 또는 GameWidget(2D)를 반환하는 위젯입니다.
 class ShooterGameWidget extends StatelessWidget {
-
   const ShooterGameWidget({super.key, required this.engine});
   final ShooterEngine engine;
 

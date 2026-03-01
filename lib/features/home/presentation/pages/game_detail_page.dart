@@ -8,12 +8,8 @@ class GameDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Game Detail: $gameId'),
-      ),
-      body: Center(
-        child: Text('Details for Game ID: $gameId'),
-      ),
+      appBar: AppBar(title: Text('Game Detail: $gameId')),
+      body: Center(child: Text('Details for Game ID: $gameId')),
     );
   }
 }

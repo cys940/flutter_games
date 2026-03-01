@@ -9,15 +9,13 @@ import 'player_3d.dart';
 
 /// 플레이어를 위협하는 3D 적 컴포넌트입니다.
 class Enemy3D extends MeshComponent with HasGameReference<BaseGameEngine3D> {
-  Enemy3D({
-    required super.position,
-    this.speed = 3.0,
-  }) : super(
-          mesh: CuboidMesh(
-            size: Vector3(1.5, 2.0, 1.5),
-            material: SpatialMaterial(albedoColor: AppColors.error),
-          ),
-        );
+  Enemy3D({required super.position, this.speed = 3.0})
+    : super(
+        mesh: CuboidMesh(
+          size: Vector3(1.5, 2.0, 1.5),
+          material: SpatialMaterial(albedoColor: AppColors.error),
+        ),
+      );
 
   final double speed;
   bool isDead = false;
@@ -54,7 +52,9 @@ class Enemy3D extends MeshComponent with HasGameReference<BaseGameEngine3D> {
   void takeDamage() {
     isDead = true;
     // 피격 연출 (색상 변경)
-    mesh.surfaces.first.material = SpatialMaterial(albedoColor: AppColors.textSecondary);
+    mesh.surfaces.first.material = SpatialMaterial(
+      albedoColor: AppColors.textSecondary,
+    );
 
     // 잠시 후 소멸
     Future.delayed(const Duration(milliseconds: 200), () {

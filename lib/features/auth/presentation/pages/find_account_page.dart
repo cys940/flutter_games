@@ -54,19 +54,28 @@ class _FindAccountPageState extends State<FindAccountPage> {
           Positioned(
             top: glowTop1,
             right: glowRight1,
-            child: _buildAmbientGlow(AppColors.accent.withValues(alpha: 0.1), glowSize1),
+            child: _buildAmbientGlow(
+              AppColors.accent.withValues(alpha: 0.1),
+              glowSize1,
+            ),
           ),
           Positioned(
             bottom: glowBottom2,
             left: glowLeft2,
-            child: _buildAmbientGlow(AppColors.primary.withValues(alpha: 0.05), glowSize2),
+            child: _buildAmbientGlow(
+              AppColors.primary.withValues(alpha: 0.05),
+              glowSize2,
+            ),
           ),
 
           // Main Content
           SafeArea(
             child: Center(
               child: SingleChildScrollView(
-                padding: EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: 40),
+                padding: EdgeInsets.symmetric(
+                  horizontal: horizontalPadding,
+                  vertical: 40,
+                ),
                 child: ConstrainedBox(
                   constraints: BoxConstraints(maxWidth: maxWidth),
                   child: Column(
@@ -85,7 +94,7 @@ class _FindAccountPageState extends State<FindAccountPage> {
               ),
             ),
           ),
-          
+
           // Back Button
           Positioned(
             top: 20,
@@ -148,10 +157,7 @@ class _FindAccountPageState extends State<FindAccountPage> {
     return Container(
       width: size,
       height: size,
-      decoration: BoxDecoration(
-        color: color,
-        shape: BoxShape.circle,
-      ),
+      decoration: BoxDecoration(color: color, shape: BoxShape.circle),
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 80, sigmaY: 80),
         child: Container(color: Colors.transparent),
@@ -222,7 +228,11 @@ class _FindAccountPageState extends State<FindAccountPage> {
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Row(
             children: [
-              const Icon(Icons.email_outlined, color: AppColors.textDim, size: 20),
+              const Icon(
+                Icons.email_outlined,
+                color: AppColors.textDim,
+                size: 20,
+              ),
               const SizedBox(width: 12),
               Expanded(
                 child: TextField(
@@ -230,7 +240,9 @@ class _FindAccountPageState extends State<FindAccountPage> {
                   style: AppTypography.body1,
                   decoration: InputDecoration(
                     hintText: '이메일 주소를 입력하세요',
-                    hintStyle: AppTypography.body2.copyWith(color: AppColors.textDim),
+                    hintStyle: AppTypography.body2.copyWith(
+                      color: AppColors.textDim,
+                    ),
                     border: InputBorder.none,
                     isDense: true,
                   ),
@@ -249,7 +261,9 @@ class _FindAccountPageState extends State<FindAccountPage> {
       return GestureDetector(
         onTap: isLoading ? null : _handleRecovery,
         child: MouseRegion(
-          cursor: isLoading ? SystemMouseCursors.basic : SystemMouseCursors.click,
+          cursor: isLoading
+              ? SystemMouseCursors.basic
+              : SystemMouseCursors.click,
           child: Container(
             width: double.infinity,
             height: 56,
@@ -260,7 +274,7 @@ class _FindAccountPageState extends State<FindAccountPage> {
                 colors: isLoading
                     ? [
                         AppColors.accent.withValues(alpha: 0.5),
-                        AppColors.accent.withValues(alpha: 0.5)
+                        AppColors.accent.withValues(alpha: 0.5),
                       ]
                     : [AppColors.accent, const Color(0xFFFF6B6B)],
                 begin: Alignment.topLeft,
@@ -274,7 +288,9 @@ class _FindAccountPageState extends State<FindAccountPage> {
                       height: 24,
                       child: CircularProgressIndicator(
                         strokeWidth: 2,
-                        valueColor: AlwaysStoppedAnimation(AppColors.background),
+                        valueColor: AlwaysStoppedAnimation(
+                          AppColors.background,
+                        ),
                       ),
                     )
                   : Row(
@@ -288,8 +304,11 @@ class _FindAccountPageState extends State<FindAccountPage> {
                           ),
                         ),
                         const SizedBox(width: 8),
-                        const Icon(Icons.send_rounded,
-                            color: AppColors.background, size: 20),
+                        const Icon(
+                          Icons.send_rounded,
+                          color: AppColors.background,
+                          size: 20,
+                        ),
                       ],
                     ),
             ),

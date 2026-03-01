@@ -63,19 +63,28 @@ class _SignUpPageState extends State<SignUpPage> {
           Positioned(
             top: glowTop1,
             right: glowRight1,
-            child: _buildAmbientGlow(AppColors.secondary.withValues(alpha: 0.1), glowSize1),
+            child: _buildAmbientGlow(
+              AppColors.secondary.withValues(alpha: 0.1),
+              glowSize1,
+            ),
           ),
           Positioned(
             bottom: glowBottom2,
             left: glowLeft2,
-            child: _buildAmbientGlow(AppColors.primary.withValues(alpha: 0.05), glowSize2),
+            child: _buildAmbientGlow(
+              AppColors.primary.withValues(alpha: 0.05),
+              glowSize2,
+            ),
           ),
 
           // Main Content
           SafeArea(
             child: Center(
               child: SingleChildScrollView(
-                padding: EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: 40),
+                padding: EdgeInsets.symmetric(
+                  horizontal: horizontalPadding,
+                  vertical: 40,
+                ),
                 child: ConstrainedBox(
                   constraints: BoxConstraints(maxWidth: maxWidth),
                   child: Column(
@@ -93,17 +102,22 @@ class _SignUpPageState extends State<SignUpPage> {
                           width: double.infinity,
                           margin: const EdgeInsets.only(bottom: 8),
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 14, vertical: 10),
+                            horizontal: 14,
+                            vertical: 10,
+                          ),
                           decoration: BoxDecoration(
                             color: Colors.red.withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(8),
                             border: Border.all(
-                                color: Colors.red.withValues(alpha: 0.3)),
+                              color: Colors.red.withValues(alpha: 0.3),
+                            ),
                           ),
                           child: Text(
                             error,
                             style: const TextStyle(
-                                color: Colors.redAccent, fontSize: 12),
+                              color: Colors.redAccent,
+                              fontSize: 12,
+                            ),
                           ),
                         );
                       }),
@@ -117,7 +131,7 @@ class _SignUpPageState extends State<SignUpPage> {
               ),
             ),
           ),
-          
+
           // Back Button
           Positioned(
             top: 20,
@@ -180,10 +194,7 @@ class _SignUpPageState extends State<SignUpPage> {
     return Container(
       width: size,
       height: size,
-      decoration: BoxDecoration(
-        color: color,
-        shape: BoxShape.circle,
-      ),
+      decoration: BoxDecoration(color: color, shape: BoxShape.circle),
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 80, sigmaY: 80),
         child: Container(color: Colors.transparent),
@@ -249,31 +260,35 @@ class _SignUpPageState extends State<SignUpPage> {
         const SizedBox(height: 20),
         _buildLabel('비밀번호'),
         const SizedBox(height: 8),
-        Watch((context) => _buildTextField(
-          controller: _passwordController,
-          hintText: '비밀번호를 설정하세요',
-          icon: Icons.lock_outline,
-          obscureText: !_viewModel.isPasswordVisible.value,
-          suffixIcon: IconButton(
-            icon: Icon(
-              _viewModel.isPasswordVisible.value 
-                  ? Icons.visibility_off 
-                  : Icons.visibility,
-              color: AppColors.textDim,
-              size: 20,
+        Watch(
+          (context) => _buildTextField(
+            controller: _passwordController,
+            hintText: '비밀번호를 설정하세요',
+            icon: Icons.lock_outline,
+            obscureText: !_viewModel.isPasswordVisible.value,
+            suffixIcon: IconButton(
+              icon: Icon(
+                _viewModel.isPasswordVisible.value
+                    ? Icons.visibility_off
+                    : Icons.visibility,
+                color: AppColors.textDim,
+                size: 20,
+              ),
+              onPressed: _viewModel.togglePasswordVisibility,
             ),
-            onPressed: _viewModel.togglePasswordVisibility,
           ),
-        )),
+        ),
         const SizedBox(height: 20),
         _buildLabel('비밀번호 확인'),
         const SizedBox(height: 8),
-        Watch((context) => _buildTextField(
-          controller: _confirmPasswordController,
-          hintText: '비밀번호를 다시 입력하세요',
-          icon: Icons.lock_reset,
-          obscureText: !_viewModel.isPasswordVisible.value,
-        )),
+        Watch(
+          (context) => _buildTextField(
+            controller: _confirmPasswordController,
+            hintText: '비밀번호를 다시 입력하세요',
+            icon: Icons.lock_reset,
+            obscureText: !_viewModel.isPasswordVisible.value,
+          ),
+        ),
       ],
     );
   }
@@ -317,7 +332,9 @@ class _SignUpPageState extends State<SignUpPage> {
               style: AppTypography.body1,
               decoration: InputDecoration(
                 hintText: hintText,
-                hintStyle: AppTypography.body2.copyWith(color: AppColors.textDim),
+                hintStyle: AppTypography.body2.copyWith(
+                  color: AppColors.textDim,
+                ),
                 border: InputBorder.none,
                 isDense: true,
               ),
@@ -335,7 +352,9 @@ class _SignUpPageState extends State<SignUpPage> {
       return GestureDetector(
         onTap: isLoading ? null : _handleSignUp,
         child: MouseRegion(
-          cursor: isLoading ? SystemMouseCursors.basic : SystemMouseCursors.click,
+          cursor: isLoading
+              ? SystemMouseCursors.basic
+              : SystemMouseCursors.click,
           child: Container(
             width: double.infinity,
             height: 56,
@@ -346,7 +365,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 colors: isLoading
                     ? [
                         AppColors.secondary.withValues(alpha: 0.5),
-                        AppColors.secondary.withValues(alpha: 0.5)
+                        AppColors.secondary.withValues(alpha: 0.5),
                       ]
                     : [AppColors.secondary, const Color(0xFFE044FF)],
                 begin: Alignment.topLeft,
@@ -360,7 +379,9 @@ class _SignUpPageState extends State<SignUpPage> {
                       height: 24,
                       child: CircularProgressIndicator(
                         strokeWidth: 2,
-                        valueColor: AlwaysStoppedAnimation(AppColors.background),
+                        valueColor: AlwaysStoppedAnimation(
+                          AppColors.background,
+                        ),
                       ),
                     )
                   : Row(
@@ -374,8 +395,11 @@ class _SignUpPageState extends State<SignUpPage> {
                           ),
                         ),
                         const SizedBox(width: 8),
-                        const Icon(Icons.rocket_launch,
-                            color: AppColors.background, size: 20),
+                        const Icon(
+                          Icons.rocket_launch,
+                          color: AppColors.background,
+                          size: 20,
+                        ),
                       ],
                     ),
             ),

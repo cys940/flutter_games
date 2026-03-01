@@ -50,8 +50,11 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Widget _buildLayout(BuildContext context,
-      {required double padding, required double maxWidth}) {
+  Widget _buildLayout(
+    BuildContext context, {
+    required double padding,
+    required double maxWidth,
+  }) {
     return Scaffold(
       backgroundColor: AppColors.background,
       body: Stack(
@@ -73,7 +76,9 @@ class _ProfilePageState extends State<ProfilePage> {
                 Expanded(
                   child: SingleChildScrollView(
                     padding: EdgeInsets.symmetric(
-                        horizontal: padding, vertical: 24),
+                      horizontal: padding,
+                      vertical: 24,
+                    ),
                     child: Center(
                       child: ConstrainedBox(
                         constraints: BoxConstraints(maxWidth: maxWidth),
@@ -96,36 +101,53 @@ class _ProfilePageState extends State<ProfilePage> {
       child: Row(
         children: [
           IconButton(
-            icon: const Icon(Icons.arrow_back_ios_new,
-                color: Colors.white70, size: 20),
+            icon: const Icon(
+              Icons.arrow_back_ios_new,
+              color: Colors.white70,
+              size: 20,
+            ),
             onPressed: () => context.pop(),
           ),
           const SizedBox(width: 8),
-          Text('내 프로필',
-              style: AppTypography.headline2
-                  .copyWith(color: AppColors.secondary, fontSize: 18)),
+          Text(
+            '내 프로필',
+            style: AppTypography.headline2.copyWith(
+              color: AppColors.secondary,
+              fontSize: 18,
+            ),
+          ),
           const Spacer(),
-          Watch((ctx) => _vm.isEditing.value
-              ? TextButton(
-                  onPressed: () {
-                    final uid = _authVm.currentUser?.id;
-                    if (uid == null) return;
-                    _vm.usernameInput.value = _usernameCtrl.text;
-                    _vm.fullNameInput.value = _fullNameCtrl.text;
-                    _vm.saveProfile(uid);
-                  },
-                  child: Text('저장',
-                      style: AppTypography.body2
-                          .copyWith(color: AppColors.secondary)))
-              : TextButton(
-                  onPressed: () {
-                    _usernameCtrl.text = _vm.profile.value?.username ?? '';
-                    _fullNameCtrl.text = _vm.profile.value?.fullName ?? '';
-                    _vm.toggleEdit();
-                  },
-                  child: Text('편집',
-                      style: AppTypography.body2
-                          .copyWith(color: AppColors.textDim)))),
+          Watch(
+            (ctx) => _vm.isEditing.value
+                ? TextButton(
+                    onPressed: () {
+                      final uid = _authVm.currentUser?.id;
+                      if (uid == null) return;
+                      _vm.usernameInput.value = _usernameCtrl.text;
+                      _vm.fullNameInput.value = _fullNameCtrl.text;
+                      _vm.saveProfile(uid);
+                    },
+                    child: Text(
+                      '저장',
+                      style: AppTypography.body2.copyWith(
+                        color: AppColors.secondary,
+                      ),
+                    ),
+                  )
+                : TextButton(
+                    onPressed: () {
+                      _usernameCtrl.text = _vm.profile.value?.username ?? '';
+                      _fullNameCtrl.text = _vm.profile.value?.fullName ?? '';
+                      _vm.toggleEdit();
+                    },
+                    child: Text(
+                      '편집',
+                      style: AppTypography.body2.copyWith(
+                        color: AppColors.textDim,
+                      ),
+                    ),
+                  ),
+          ),
         ],
       ),
     );
@@ -134,16 +156,20 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget _buildBody(BuildContext context) {
     if (_vm.isLoading.value) {
       return const SizedBox(
-          height: 300,
-          child: Center(
-              child:
-                  CircularProgressIndicator(color: AppColors.secondary)));
+        height: 300,
+        child: Center(
+          child: CircularProgressIndicator(color: AppColors.secondary),
+        ),
+      );
     }
     final p = _vm.profile.value;
     if (p == null) {
       return Center(
-          child: Text('프로필을 불러올 수 없습니다.',
-              style: AppTypography.body1.copyWith(color: AppColors.textDim)));
+        child: Text(
+          '프로필을 불러올 수 없습니다.',
+          style: AppTypography.body1.copyWith(color: AppColors.textDim),
+        ),
+      );
     }
     return Column(
       children: [
@@ -169,28 +195,38 @@ class _ProfilePageState extends State<ProfilePage> {
             gradient: LinearGradient(
               colors: [
                 AppColors.secondary.withValues(alpha: 0.3),
-                AppColors.primary.withValues(alpha: 0.3)
+                AppColors.primary.withValues(alpha: 0.3),
               ],
             ),
             border: Border.all(
-                color: AppColors.secondary.withValues(alpha: 0.4), width: 2),
+              color: AppColors.secondary.withValues(alpha: 0.4),
+              width: 2,
+            ),
           ),
           child: Center(
             child: Text(
               (profile.username.isNotEmpty ? profile.username[0] : '?')
                   .toUpperCase(),
               style: AppTypography.headline1.copyWith(
-                  fontSize: 36, color: AppColors.secondary),
+                fontSize: 36,
+                color: AppColors.secondary,
+              ),
             ),
           ),
         ),
         const SizedBox(height: 12),
-        Text('@${profile.username}',
-            style: AppTypography.headline2
-                .copyWith(color: Colors.white, fontSize: 18)),
+        Text(
+          '@${profile.username}',
+          style: AppTypography.headline2.copyWith(
+            color: Colors.white,
+            fontSize: 18,
+          ),
+        ),
         const SizedBox(height: 4),
-        Text(profile.fullName,
-            style: AppTypography.body2.copyWith(color: AppColors.textDim)),
+        Text(
+          profile.fullName,
+          style: AppTypography.body2.copyWith(color: AppColors.textDim),
+        ),
       ],
     );
   }
@@ -210,23 +246,27 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
           child: Column(
             children: [
-              _infoRow('사용자 이름',
-                  isEditing
-                      ? _buildInput(_usernameCtrl, '사용자 이름')
-                      : Text(profile.username,
-                          style: AppTypography.body1)),
-              const Divider(color: Colors.white10, height: 24),
-              _infoRow('이름',
-                  isEditing
-                      ? _buildInput(_fullNameCtrl, '이름')
-                      : Text(profile.fullName,
-                          style: AppTypography.body1)),
+              _infoRow(
+                '사용자 이름',
+                isEditing
+                    ? _buildInput(_usernameCtrl, '사용자 이름')
+                    : Text(profile.username, style: AppTypography.body1),
+              ),
               const Divider(color: Colors.white10, height: 24),
               _infoRow(
-                  '이메일',
-                  Text(_authVm.currentUser?.email ?? '-',
-                      style: AppTypography.body1
-                          .copyWith(color: AppColors.textDim))),
+                '이름',
+                isEditing
+                    ? _buildInput(_fullNameCtrl, '이름')
+                    : Text(profile.fullName, style: AppTypography.body1),
+              ),
+              const Divider(color: Colors.white10, height: 24),
+              _infoRow(
+                '이메일',
+                Text(
+                  _authVm.currentUser?.email ?? '-',
+                  style: AppTypography.body1.copyWith(color: AppColors.textDim),
+                ),
+              ),
             ],
           ),
         ),
@@ -239,9 +279,13 @@ class _ProfilePageState extends State<ProfilePage> {
       children: [
         SizedBox(
           width: 100,
-          child: Text(label,
-              style: AppTypography.caption
-                  .copyWith(color: AppColors.textDim, fontSize: 11)),
+          child: Text(
+            label,
+            style: AppTypography.caption.copyWith(
+              color: AppColors.textDim,
+              fontSize: 11,
+            ),
+          ),
         ),
         Expanded(child: content),
       ],
@@ -254,8 +298,7 @@ class _ProfilePageState extends State<ProfilePage> {
       style: AppTypography.body1,
       decoration: InputDecoration(
         hintText: hint,
-        hintStyle:
-            AppTypography.body2.copyWith(color: AppColors.textDim),
+        hintStyle: AppTypography.body2.copyWith(color: AppColors.textDim),
         border: InputBorder.none,
         isDense: true,
       ),
@@ -271,10 +314,13 @@ class _ProfilePageState extends State<ProfilePage> {
         children: [
           Padding(
             padding: const EdgeInsets.only(left: 4, bottom: 12),
-            child: Text('내 최근 점수',
-                style: AppTypography.caption.copyWith(
-                    color: AppColors.secondary.withValues(alpha: 0.8),
-                    fontSize: 11)),
+            child: Text(
+              '내 최근 점수',
+              style: AppTypography.caption.copyWith(
+                color: AppColors.secondary.withValues(alpha: 0.8),
+                fontSize: 11,
+              ),
+            ),
           ),
           ClipRRect(
             borderRadius: BorderRadius.circular(12),
@@ -285,14 +331,16 @@ class _ProfilePageState extends State<ProfilePage> {
                 decoration: BoxDecoration(
                   color: Colors.white.withValues(alpha: 0.03),
                   borderRadius: BorderRadius.circular(12),
-                  border:
-                      Border.all(color: Colors.white.withValues(alpha: 0.07)),
+                  border: Border.all(
+                    color: Colors.white.withValues(alpha: 0.07),
+                  ),
                 ),
                 child: Center(
                   child: Text(
                     '게임을 플레이하면 점수가 표시됩니다',
-                    style: AppTypography.body2
-                        .copyWith(color: AppColors.textDim),
+                    style: AppTypography.body2.copyWith(
+                      color: AppColors.textDim,
+                    ),
                   ),
                 ),
               ),
@@ -319,9 +367,13 @@ class _ProfilePageState extends State<ProfilePage> {
           color: Colors.red.withValues(alpha: 0.07),
         ),
         child: Center(
-          child: Text('로그아웃',
-              style: AppTypography.body1.copyWith(
-                  color: Colors.redAccent, fontWeight: FontWeight.w600)),
+          child: Text(
+            '로그아웃',
+            style: AppTypography.body1.copyWith(
+              color: Colors.redAccent,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
         ),
       ),
     );

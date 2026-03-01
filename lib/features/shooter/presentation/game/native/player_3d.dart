@@ -9,8 +9,8 @@ import '../../../../../core/engine/native_base_engine_3d.dart';
 import '../../../domain/engine/shooter_engine.dart';
 
 /// 1인칭 시점을 제어하는 3D 플레이어 컴포넌트입니다.
-class Player3D extends Component3D with KeyboardHandler, HasGameReference<BaseGameEngine3D> {
-
+class Player3D extends Component3D
+    with KeyboardHandler, HasGameReference<BaseGameEngine3D> {
   Player3D() : super();
 
   final double moveSpeed = 8.0;
@@ -47,7 +47,8 @@ class Player3D extends Component3D with KeyboardHandler, HasGameReference<BaseGa
 
     // 2) 카메라 방향 기준으로 이동 (Y축 무시하여 지면 이동)
     if (_moveInput.length2 > 0) {
-      final flatForward = Vector3(math.sin(_yaw), 0, -math.cos(_yaw))..normalize();
+      final flatForward = Vector3(math.sin(_yaw), 0, -math.cos(_yaw))
+        ..normalize();
       final flatRight = Vector3(math.cos(_yaw), 0, math.sin(_yaw));
 
       final movement = flatForward * (-_moveInput.z) + flatRight * _moveInput.x;

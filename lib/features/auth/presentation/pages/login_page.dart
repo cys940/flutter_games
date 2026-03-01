@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -58,12 +57,18 @@ class _LoginPageState extends State<LoginPage> {
           Positioned(
             top: glowTop1,
             right: glowRight1,
-            child: _buildAmbientGlow(AppColors.primary.withValues(alpha: 0.1), glowSize1),
+            child: _buildAmbientGlow(
+              AppColors.primary.withValues(alpha: 0.1),
+              glowSize1,
+            ),
           ),
           Positioned(
             bottom: glowBottom2,
             left: glowLeft2,
-            child: _buildAmbientGlow(AppColors.primary.withValues(alpha: 0.05), glowSize2),
+            child: _buildAmbientGlow(
+              AppColors.primary.withValues(alpha: 0.05),
+              glowSize2,
+            ),
           ),
 
           // Main Content
@@ -89,17 +94,22 @@ class _LoginPageState extends State<LoginPage> {
                           width: double.infinity,
                           margin: const EdgeInsets.only(bottom: 8),
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 14, vertical: 10),
+                            horizontal: 14,
+                            vertical: 10,
+                          ),
                           decoration: BoxDecoration(
                             color: Colors.red.withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(8),
                             border: Border.all(
-                                color: Colors.red.withValues(alpha: 0.3)),
+                              color: Colors.red.withValues(alpha: 0.3),
+                            ),
                           ),
                           child: Text(
                             error,
                             style: const TextStyle(
-                                color: Colors.redAccent, fontSize: 12),
+                              color: Colors.redAccent,
+                              fontSize: 12,
+                            ),
                           ),
                         );
                       }),
@@ -168,10 +178,7 @@ class _LoginPageState extends State<LoginPage> {
     return Container(
       width: size,
       height: size,
-      decoration: BoxDecoration(
-        color: color,
-        shape: BoxShape.circle,
-      ),
+      decoration: BoxDecoration(color: color, shape: BoxShape.circle),
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 80, sigmaY: 80),
         child: Container(color: Colors.transparent),
@@ -252,23 +259,25 @@ class _LoginPageState extends State<LoginPage> {
         const SizedBox(height: 20),
         _buildLabel('비밀번호'),
         const SizedBox(height: 8),
-        Watch((context) => _buildTextField(
-          controller: _passwordController,
-          hintText: '비밀번호를 입력하세요',
-          icon: Icons.lock_outline,
-          obscureText: !_viewModel.isPasswordVisible.value,
-          suffixIcon: IconButton(
-            icon: Icon(
-              _viewModel.isPasswordVisible.value 
-                  ? Icons.visibility_off 
-                  : Icons.visibility,
-              color: AppColors.textDim,
-              size: 20,
+        Watch(
+          (context) => _buildTextField(
+            controller: _passwordController,
+            hintText: '비밀번호를 입력하세요',
+            icon: Icons.lock_outline,
+            obscureText: !_viewModel.isPasswordVisible.value,
+            suffixIcon: IconButton(
+              icon: Icon(
+                _viewModel.isPasswordVisible.value
+                    ? Icons.visibility_off
+                    : Icons.visibility,
+                color: AppColors.textDim,
+                size: 20,
+              ),
+              onPressed: _viewModel.togglePasswordVisibility,
             ),
-            onPressed: _viewModel.togglePasswordVisibility,
+            onChanged: (value) => _viewModel.password.value = value,
           ),
-          onChanged: (value) => _viewModel.password.value = value,
-        )),
+        ),
       ],
     );
   }
@@ -314,7 +323,9 @@ class _LoginPageState extends State<LoginPage> {
               style: AppTypography.body1,
               decoration: InputDecoration(
                 hintText: hintText,
-                hintStyle: AppTypography.body2.copyWith(color: AppColors.textDim),
+                hintStyle: AppTypography.body2.copyWith(
+                  color: AppColors.textDim,
+                ),
                 border: InputBorder.none,
                 isDense: true,
               ),
@@ -332,11 +343,15 @@ class _LoginPageState extends State<LoginPage> {
       return GestureDetector(
         onTap: isLoading ? null : _viewModel.login,
         child: MouseRegion(
-          cursor: isLoading ? SystemMouseCursors.basic : SystemMouseCursors.click,
+          cursor: isLoading
+              ? SystemMouseCursors.basic
+              : SystemMouseCursors.click,
           onEnter: (_) => _viewModel.isHoveringLogin.value = true,
           onExit: (_) => _viewModel.isHoveringLogin.value = false,
           child: AnimatedScale(
-            scale: isLoading ? 1.0 : (_viewModel.isHoveringLogin.value ? 1.03 : 1.0),
+            scale: isLoading
+                ? 1.0
+                : (_viewModel.isHoveringLogin.value ? 1.03 : 1.0),
             duration: const Duration(milliseconds: 150),
             child: Container(
               width: double.infinity,
@@ -348,7 +363,7 @@ class _LoginPageState extends State<LoginPage> {
                   colors: isLoading
                       ? [
                           AppColors.primary.withValues(alpha: 0.5),
-                          AppColors.primary.withValues(alpha: 0.5)
+                          AppColors.primary.withValues(alpha: 0.5),
                         ]
                       : [AppColors.primary, AppColors.primaryLight],
                   begin: Alignment.topLeft,
@@ -362,7 +377,9 @@ class _LoginPageState extends State<LoginPage> {
                         height: 24,
                         child: CircularProgressIndicator(
                           strokeWidth: 2,
-                          valueColor: AlwaysStoppedAnimation(AppColors.background),
+                          valueColor: AlwaysStoppedAnimation(
+                            AppColors.background,
+                          ),
                         ),
                       )
                     : Row(
@@ -376,8 +393,10 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                           const SizedBox(width: 8),
-                          const Icon(Icons.arrow_forward,
-                              color: AppColors.background),
+                          const Icon(
+                            Icons.arrow_forward,
+                            color: AppColors.background,
+                          ),
                         ],
                       ),
               ),
@@ -405,7 +424,10 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _buildTextButton({required String text, required VoidCallback onPressed}) {
+  Widget _buildTextButton({
+    required String text,
+    required VoidCallback onPressed,
+  }) {
     return TextButton(
       onPressed: onPressed,
       child: Text(
@@ -496,8 +518,8 @@ class _LoginPageState extends State<LoginPage> {
                 type == 'google'
                     ? Icons.g_mobiledata
                     : type == 'discord'
-                        ? Icons.discord
-                        : Icons.apple,
+                    ? Icons.discord
+                    : Icons.apple,
                 color: Colors.white70,
                 size: 28,
               ),

@@ -4,7 +4,6 @@ import '../../domain/engine/shooter_engine.dart';
 /// 슈팅 게임의 상태를 관리하는 ViewModel입니다.
 @injectable
 class ShooterViewModel {
-
   ShooterViewModel(this.gameEngine);
   final ShooterEngine gameEngine;
 

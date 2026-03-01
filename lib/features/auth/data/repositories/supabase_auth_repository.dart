@@ -17,10 +17,7 @@ class SupabaseAuthRepository implements AuthRepository {
     required String email,
     required String password,
   }) async {
-    await _supabase.auth.signInWithPassword(
-      email: email,
-      password: password,
-    );
+    await _supabase.auth.signInWithPassword(email: email, password: password);
   }
 
   @override
@@ -41,10 +38,12 @@ class SupabaseAuthRepository implements AuthRepository {
   Future<void> signInWithOAuth(OAuthProvider provider) async {
     // 1. Handle Native Google Sign-In where supported (Android, iOS, macOS, Web)
     if (provider == OAuthProvider.google) {
-      final supportsNativeGoogle = kIsWeb || (Platform.isAndroid || Platform.isIOS || Platform.isMacOS);
-      
+      final supportsNativeGoogle =
+          kIsWeb || (Platform.isAndroid || Platform.isIOS || Platform.isMacOS);
+
       if (supportsNativeGoogle) {
-        final webClientId = 'YOUR_WEB_CLIENT_ID.apps.googleusercontent.com'; // Placeholder
+        final webClientId =
+            'YOUR_WEB_CLIENT_ID.apps.googleusercontent.com'; // Placeholder
         if (webClientId.contains('YOUR_WEB_CLIENT_ID')) {
           // Fall back to browser-based OAuth if client ID is not configured
           await _supabase.auth.signInWithOAuth(
@@ -54,7 +53,9 @@ class SupabaseAuthRepository implements AuthRepository {
           return;
         }
         if (!_isGoogleInitialized) {
-          await gsi.GoogleSignIn.instance.initialize(serverClientId: webClientId);
+          await gsi.GoogleSignIn.instance.initialize(
+            serverClientId: webClientId,
+          );
           _isGoogleInitialized = true;
         }
         final googleUser = await gsi.GoogleSignIn.instance.authenticate();

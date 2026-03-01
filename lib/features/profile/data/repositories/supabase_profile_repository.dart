@@ -36,9 +36,9 @@ class SupabaseProfileRepository implements ProfileRepository {
   }) async {
     final updates = <String, dynamic>{
       'updated_at': DateTime.now().toIso8601String(),
-      if (username != null) 'username': username,
-      if (fullName != null) 'full_name': fullName,
-      if (avatarUrl != null) 'avatar_url': avatarUrl,
+      'username': ?username,
+      'full_name': ?fullName,
+      'avatar_url': ?avatarUrl,
     };
     await _supabase.from('profiles').update(updates).eq('id', userId);
   }

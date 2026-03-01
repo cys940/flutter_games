@@ -16,18 +16,14 @@ class SupabaseHomeRepository implements HomeRepository {
         .from('games')
         .select()
         .order('created_at', ascending: true);
-    
+
     return (response as List).map((json) => _mapToEntity(json)).toList();
   }
 
   @override
   Future<GameEntity> getGameById(String id) async {
-    final response = await _client
-        .from('games')
-        .select()
-        .eq('id', id)
-        .single();
-    
+    final response = await _client.from('games').select().eq('id', id).single();
+
     return _mapToEntity(response);
   }
 
@@ -69,7 +65,9 @@ class SupabaseHomeRepository implements HomeRepository {
   }
 
   @override
-  Future<List<Map<String, dynamic>>> fetchHighScores({required String gameId}) async {
+  Future<List<Map<String, dynamic>>> fetchHighScores({
+    required String gameId,
+  }) async {
     final response = await _client
         .from('scores')
         .select('score, user_id') // Selecting score and user_id for now
@@ -77,6 +75,8 @@ class SupabaseHomeRepository implements HomeRepository {
         .order('score', ascending: false)
         .limit(10); // Top 10 high scores
 
-    return (response as List).map((json) => json as Map<String, dynamic>).toList();
+    return (response as List)
+        .map((json) => json as Map<String, dynamic>)
+        .toList();
   }
 }

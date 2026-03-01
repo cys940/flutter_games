@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 /// 디바이스의 화면 크기에 따른 반응형 레이아웃을 지원하는 유틸리티 클래스입니다.
 class ResponsiveLayout extends StatelessWidget {
-
   const ResponsiveLayout({
     super.key,
     required this.mobile,

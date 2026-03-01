@@ -1,15 +1,13 @@
-import '../../../../core/presentation/widgets/glass_panel.dart';
-import '../../domain/entities/game_entity.dart';
 import 'dart:ui';
+
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:signals_flutter/signals_flutter.dart';
 
 import '../../../../core/design_system/styles.dart';
 import '../../../../core/layouts/responsive_layout.dart';
-import '../widgets/game_card.dart';
-
+import '../../../../core/presentation/widgets/glass_panel.dart';
 import '../viewmodels/home_view_model.dart';
+import '../widgets/game_card.dart';
 
 /// 앱의 메인 홈 페이지입니다. 프리미엄 사이버펑크 디자인과 반응형 레이아웃을 제공합니다.
 class HomePage extends StatefulWidget {
@@ -233,8 +231,8 @@ class _HomePageState extends State<HomePage>
           crossAxisCount: ResponsiveLayout.isDesktop(context)
               ? 4
               : ResponsiveLayout.isTablet(context)
-                  ? 3
-                  : 2, // 2 columns for mobile, 3 for tablet, 4 for desktop
+              ? 3
+              : 2, // 2 columns for mobile, 3 for tablet, 4 for desktop
           crossAxisSpacing: 16,
           mainAxisSpacing: 16,
           childAspectRatio: 0.85,
@@ -247,16 +245,6 @@ class _HomePageState extends State<HomePage>
       );
     });
   }
-
-
-
-
-
-
-
-
-
-
 
   Widget _buildBottomNav() {
     return ClipRect(
@@ -348,5 +336,3 @@ class _HomePageState extends State<HomePage>
     );
   }
 }
-
-

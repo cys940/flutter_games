@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -7,17 +6,15 @@ import '../../../../core/presentation/widgets/glass_panel.dart';
 import '../../domain/entities/game_entity.dart';
 
 class GameCard extends StatefulWidget {
-  const GameCard({
-    super.key,
-    required this.game,
-  });
+  const GameCard({super.key, required this.game});
   final GameEntity game;
 
   @override
   State<GameCard> createState() => _GameCardState();
 }
 
-class _GameCardState extends State<GameCard> with SingleTickerProviderStateMixin {
+class _GameCardState extends State<GameCard>
+    with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _scaleAnimation;
   bool _isHovered = false;
@@ -30,10 +27,7 @@ class _GameCardState extends State<GameCard> with SingleTickerProviderStateMixin
       duration: const Duration(milliseconds: 200),
     );
     _scaleAnimation = Tween<double>(begin: 1.0, end: 1.05).animate(
-      CurvedAnimation(
-        parent: _animationController,
-        curve: Curves.easeOutCubic,
-      ),
+      CurvedAnimation(parent: _animationController, curve: Curves.easeOutCubic),
     );
   }
 
@@ -71,7 +65,9 @@ class _GameCardState extends State<GameCard> with SingleTickerProviderStateMixin
               child: GlassPanel(
                 padding: const EdgeInsets.all(12),
                 borderRadius: 12,
-                borderColor: _isHovered ? AppColors.primary.withOpacity(0.4) : null,
+                borderColor: _isHovered
+                    ? AppColors.primary.withOpacity(0.4)
+                    : null,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -91,7 +87,9 @@ class _GameCardState extends State<GameCard> with SingleTickerProviderStateMixin
                           errorBuilder: (context, error, stackTrace) => Icon(
                             Icons.videogame_asset,
                             size: 32,
-                            color: _isHovered ? AppColors.primary : AppColors.textDim,
+                            color: _isHovered
+                                ? AppColors.primary
+                                : AppColors.textDim,
                             shadows: _isHovered
                                 ? [
                                     Shadow(

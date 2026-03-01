@@ -9,11 +9,6 @@ class HomeGameEngine extends BaseGameEngine {
   @override
   Future<void> onLoad() async {
     // 게임월드에 컴포넌트 추가
-    add(
-      ScoreBoxComponent(
-        position: Vector2(100, 100),
-        size: Vector2(80, 80),
-      ),
-    );
+    add(ScoreBoxComponent(position: Vector2(100, 100), size: Vector2(80, 80)));
   }
 }

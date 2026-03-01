@@ -39,27 +39,34 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
     );
   }
 
-  Widget _buildLayout(BuildContext context,
-      {required double padding, required double maxWidth}) {
+  Widget _buildLayout(
+    BuildContext context, {
+    required double padding,
+    required double maxWidth,
+  }) {
     return Scaffold(
       backgroundColor: AppColors.background,
       body: Stack(
         children: [
           Positioned(
-              top: -80,
-              right: -80,
-              child: _glow(AppColors.primary.withValues(alpha: 0.08), 300)),
+            top: -80,
+            right: -80,
+            child: _glow(AppColors.primary.withValues(alpha: 0.08), 300),
+          ),
           Positioned(
-              bottom: -80,
-              left: -80,
-              child: _glow(AppColors.accent.withValues(alpha: 0.05), 240)),
+            bottom: -80,
+            left: -80,
+            child: _glow(AppColors.accent.withValues(alpha: 0.05), 240),
+          ),
           SafeArea(
             child: Column(
               children: [
                 _buildAppBar(context),
                 _buildGameTabs(),
                 Expanded(
-                  child: Watch((ctx) => _buildScoreList(ctx, padding, maxWidth)),
+                  child: Watch(
+                    (ctx) => _buildScoreList(ctx, padding, maxWidth),
+                  ),
                 ),
                 Watch((ctx) => _buildMyRankBar(ctx)),
               ],
@@ -76,14 +83,21 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
       child: Row(
         children: [
           IconButton(
-            icon: const Icon(Icons.arrow_back_ios_new,
-                color: Colors.white70, size: 20),
+            icon: const Icon(
+              Icons.arrow_back_ios_new,
+              color: Colors.white70,
+              size: 20,
+            ),
             onPressed: () => context.pop(),
           ),
           const SizedBox(width: 8),
-          Text('리더보드',
-              style: AppTypography.headline2
-                  .copyWith(color: AppColors.primary, fontSize: 20)),
+          Text(
+            '리더보드',
+            style: AppTypography.headline2.copyWith(
+              color: AppColors.primary,
+              fontSize: 20,
+            ),
+          ),
           const Spacer(),
           const Icon(Icons.emoji_events, color: AppColors.primary, size: 24),
         ],
@@ -107,19 +121,21 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 200),
                   padding: const EdgeInsets.symmetric(
-                      horizontal: 20, vertical: 8),
+                    horizontal: 20,
+                    vertical: 8,
+                  ),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     gradient: isSelected
-                        ? LinearGradient(colors: [
-                            AppColors.primary,
-                            AppColors.primaryLight
-                          ])
+                        ? LinearGradient(
+                            colors: [AppColors.primary, AppColors.primaryLight],
+                          )
                         : null,
                     border: Border.all(
-                        color: isSelected
-                            ? AppColors.primary
-                            : Colors.white.withValues(alpha: 0.1)),
+                      color: isSelected
+                          ? AppColors.primary
+                          : Colors.white.withValues(alpha: 0.1),
+                    ),
                     color: isSelected
                         ? null
                         : Colors.white.withValues(alpha: 0.03),
@@ -127,7 +143,9 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                   child: Text(
                     LeaderboardViewModel.gameLabels[game] ?? game,
                     style: AppTypography.body2.copyWith(
-                      color: isSelected ? AppColors.background : AppColors.textDim,
+                      color: isSelected
+                          ? AppColors.background
+                          : AppColors.textDim,
                       fontWeight: isSelected
                           ? FontWeight.bold
                           : FontWeight.normal,
@@ -142,10 +160,15 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
     });
   }
 
-  Widget _buildScoreList(BuildContext context, double padding, double maxWidth) {
+  Widget _buildScoreList(
+    BuildContext context,
+    double padding,
+    double maxWidth,
+  ) {
     if (_vm.isLoading.value) {
       return const Center(
-          child: CircularProgressIndicator(color: AppColors.primary));
+        child: CircularProgressIndicator(color: AppColors.primary),
+      );
     }
     final list = _vm.scores.value;
     if (list.isEmpty) {
@@ -153,10 +176,16 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.sports_esports, color: AppColors.textDim, size: 48),
+            const Icon(
+              Icons.sports_esports,
+              color: AppColors.textDim,
+              size: 48,
+            ),
             const SizedBox(height: 16),
-            Text('아직 점수가 없습니다',
-                style: AppTypography.body1.copyWith(color: AppColors.textDim)),
+            Text(
+              '아직 점수가 없습니다',
+              style: AppTypography.body1.copyWith(color: AppColors.textDim),
+            ),
           ],
         ),
       );
@@ -200,11 +229,17 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
             : Colors.white.withValues(alpha: 0.03),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-            color: isMe
-                ? AppColors.primary.withValues(alpha: 0.3)
-                : Colors.white.withValues(alpha: 0.06)),
+          color: isMe
+              ? AppColors.primary.withValues(alpha: 0.3)
+              : Colors.white.withValues(alpha: 0.06),
+        ),
         boxShadow: rank <= 3
-            ? [BoxShadow(color: rankColor.withValues(alpha: 0.15), blurRadius: 8)]
+            ? [
+                BoxShadow(
+                  color: rankColor.withValues(alpha: 0.15),
+                  blurRadius: 8,
+                ),
+              ]
             : null,
       ),
       child: Row(
@@ -214,8 +249,10 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
             width: 36,
             child: rankIcon != null
                 ? Icon(rankIcon, color: rankColor, size: 22)
-                : Text('$rank',
-                    style: AppTypography.body1.copyWith(color: rankColor)),
+                : Text(
+                    '$rank',
+                    style: AppTypography.body1.copyWith(color: rankColor),
+                  ),
           ),
           // 아바타
           Container(
@@ -225,14 +262,19 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
               shape: BoxShape.circle,
               color: AppColors.surface,
               border: Border.all(
-                  color: rankColor.withValues(alpha: 0.3), width: 1.5),
+                color: rankColor.withValues(alpha: 0.3),
+                width: 1.5,
+              ),
             ),
             child: Center(
               child: Text(
                 (score.username.isNotEmpty ? score.username[0] : '?')
                     .toUpperCase(),
                 style: TextStyle(
-                    color: rankColor, fontWeight: FontWeight.bold, fontSize: 14),
+                  color: rankColor,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                ),
               ),
             ),
           ),
@@ -242,13 +284,20 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(score.username,
-                    style: AppTypography.body1.copyWith(
-                        color: isMe ? AppColors.primary : Colors.white,
-                        fontWeight: isMe ? FontWeight.bold : FontWeight.normal)),
-                Text(score.gameId,
-                    style: AppTypography.caption
-                        .copyWith(color: AppColors.textDim, fontSize: 10)),
+                Text(
+                  score.username,
+                  style: AppTypography.body1.copyWith(
+                    color: isMe ? AppColors.primary : Colors.white,
+                    fontWeight: isMe ? FontWeight.bold : FontWeight.normal,
+                  ),
+                ),
+                Text(
+                  score.gameId,
+                  style: AppTypography.caption.copyWith(
+                    color: AppColors.textDim,
+                    fontSize: 10,
+                  ),
+                ),
               ],
             ),
           ),
@@ -259,7 +308,12 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
               color: rank <= 3 ? rankColor : Colors.white,
               fontSize: 18,
               shadows: rank <= 3
-                  ? [Shadow(color: rankColor.withValues(alpha: 0.5), blurRadius: 6)]
+                  ? [
+                      Shadow(
+                        color: rankColor.withValues(alpha: 0.5),
+                        blurRadius: 6,
+                      ),
+                    ]
                   : null,
             ),
           ),
@@ -274,8 +328,7 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
     final rank = _vm.getMyRank(uid);
     if (rank == -1) return const SizedBox.shrink();
 
-    final myScore =
-        _vm.scores.value.firstWhere((s) => s.userId == uid);
+    final myScore = _vm.scores.value.firstWhere((s) => s.userId == uid);
 
     return ClipRRect(
       child: BackdropFilter(
@@ -285,22 +338,33 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
           decoration: BoxDecoration(
             color: AppColors.primary.withValues(alpha: 0.12),
             border: Border(
-                top: BorderSide(
-                    color: AppColors.primary.withValues(alpha: 0.2))),
+              top: BorderSide(color: AppColors.primary.withValues(alpha: 0.2)),
+            ),
           ),
           child: Row(
             children: [
               const Icon(Icons.person, color: AppColors.primary, size: 20),
               const SizedBox(width: 12),
-              Text('내 순위', style: AppTypography.caption.copyWith(color: AppColors.textDim)),
+              Text(
+                '내 순위',
+                style: AppTypography.caption.copyWith(color: AppColors.textDim),
+              ),
               const SizedBox(width: 8),
-              Text('#$rank',
-                  style: AppTypography.headline2
-                      .copyWith(color: AppColors.primary, fontSize: 16)),
+              Text(
+                '#$rank',
+                style: AppTypography.headline2.copyWith(
+                  color: AppColors.primary,
+                  fontSize: 16,
+                ),
+              ),
               const Spacer(),
-              Text('${myScore.score}점',
-                  style: AppTypography.body1
-                      .copyWith(color: Colors.white, fontWeight: FontWeight.bold)),
+              Text(
+                '${myScore.score}점',
+                style: AppTypography.body1.copyWith(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ],
           ),
         ),

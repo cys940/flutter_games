@@ -6,9 +6,7 @@ class PuzzleGameScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Puzzle Game'),
-      ),
+      appBar: AppBar(title: const Text('Puzzle Game')),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

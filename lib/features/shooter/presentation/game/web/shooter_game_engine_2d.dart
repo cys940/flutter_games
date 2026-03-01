@@ -6,7 +6,7 @@ import '../../../domain/engine/shooter_engine.dart';
 class ShooterEngineWeb extends FlameGame implements ShooterEngine {
   @override
   final healthSignal = signal<double>(100.0);
-  
+
   @override
   final scoreSignal = signal<int>(0);
 

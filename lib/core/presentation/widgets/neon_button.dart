@@ -39,7 +39,9 @@ class _NeonButtonState extends State<NeonButton> {
           width: widget.isFullWidth ? double.infinity : null,
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
           decoration: BoxDecoration(
-            color: _isHovered ? widget.color : widget.color.withValues(alpha: 0.1),
+            color: _isHovered
+                ? widget.color
+                : widget.color.withValues(alpha: 0.1),
             border: Border.all(color: widget.color, width: 1.5),
             boxShadow: _isHovered ? AppColors.neonGlow(widget.color) : [],
           ),

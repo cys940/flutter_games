@@ -9,7 +9,10 @@ class SupabaseLeaderboardRepository implements LeaderboardRepository {
   final SupabaseClient _supabase;
 
   @override
-  Future<List<ScoreEntity>> getTopScores({String? gameId, int limit = 50}) async {
+  Future<List<ScoreEntity>> getTopScores({
+    String? gameId,
+    int limit = 50,
+  }) async {
     // eq() must come before order() and limit() in postgrest
     dynamic query = _supabase
         .from('scores')

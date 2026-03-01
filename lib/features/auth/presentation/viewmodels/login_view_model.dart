@@ -1,6 +1,7 @@
 import 'package:injectable/injectable.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:signals_flutter/signals_flutter.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+
 import '../../domain/repositories/auth_repository.dart';
 
 @injectable
@@ -36,7 +37,9 @@ class LoginViewModel {
     } on AuthException catch (e) {
       if (e.message.toLowerCase().contains('email not confirmed')) {
         errorMessage.value = '이메일 인증이 완료되지 않았습니다. 이메일을 확인해 주세요.';
-      } else if (e.message.toLowerCase().contains('invalid login credentials')) {
+      } else if (e.message.toLowerCase().contains(
+        'invalid login credentials',
+      )) {
         errorMessage.value = '이메일 또는 비밀번호가 올바르지 않습니다.';
       } else {
         errorMessage.value = '로그인 실패: ${e.message}';
@@ -52,9 +55,12 @@ class LoginViewModel {
     isPasswordVisible.value = !isPasswordVisible.value;
   }
 
-  Future<void> signInWithGoogle() => _authRepository.signInWithOAuth(OAuthProvider.google);
-  Future<void> signInWithDiscord() => _authRepository.signInWithOAuth(OAuthProvider.discord);
-  Future<void> signInWithApple() => _authRepository.signInWithOAuth(OAuthProvider.apple);
+  Future<void> signInWithGoogle() =>
+      _authRepository.signInWithOAuth(OAuthProvider.google);
+  Future<void> signInWithDiscord() =>
+      _authRepository.signInWithOAuth(OAuthProvider.discord);
+  Future<void> signInWithApple() =>
+      _authRepository.signInWithOAuth(OAuthProvider.apple);
 
   late final username = signal<String>('');
   late final fullName = signal<String>('');
@@ -78,10 +84,7 @@ class LoginViewModel {
         email: email,
         password: password,
         // Pass metadata for the Postgres trigger to create a profile
-        data: {
-          if (username != null) 'user_name': username,
-          if (fullName != null) 'full_name': fullName,
-        },
+        data: {'user_name': ?username, 'full_name': ?fullName},
       );
     } on AuthException catch (e) {
       if (e.message.contains('User already registered')) {
